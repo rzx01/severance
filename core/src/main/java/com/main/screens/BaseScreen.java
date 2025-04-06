@@ -1,44 +1,29 @@
 package com.main.screens;
 
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.Gdx;
+import com.main.Main;
 
 public abstract class BaseScreen implements Screen {
-
+    protected Main game;
     protected Stage stage;
-    protected SpriteBatch batch;
+    protected FitViewport viewport;
+    protected OrthographicCamera camera;
 
-    public BaseScreen(SpriteBatch batch) {
-        this.batch = batch;
-        this.stage = new Stage(new FitViewport(800, 480), batch); // Centralized resolution
-        Gdx.input.setInputProcessor(stage); // Handles input globally
-    }
-
-    protected Table createCenteredTable() {
-        Table table = new Table();
-        table.setFillParent(true);
-        table.center();
-        stage.addActor(table);
-        return table;
+    public BaseScreen(Main game) {
+        this.game = game;
+        camera = new OrthographicCamera();
+        viewport = new FitViewport(800, 600, camera);
+        stage = new Stage(viewport);
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-    }
-
-    @Override
-    public void render(float delta) {
-        stage.act(delta);
-        stage.draw();
-    }
-    @Override
-    public void show() {
-        // Default no-op (can be overridden if needed)
+        viewport.update(width, height);
     }
 
     @Override public void pause() {}

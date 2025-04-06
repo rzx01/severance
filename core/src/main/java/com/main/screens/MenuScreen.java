@@ -1,43 +1,63 @@
 package com.main.screens;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.main.Main;
 
-public class MenuScreen extends BaseScreen {
+public class MenuScreen extends ScreenAdapter {
 
     private Main game;
+    private Stage stage;
     private Skin skin;
 
     public MenuScreen(Main game) {
-        super(game.batch);
         this.game = game;
-        setupUI();
     }
 
-    private void setupUI() {
-        skin = new Skin();
-        BitmapFont font = new BitmapFont();
-        skin.add("default", font);
+    @Override
+    public void show() {
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
 
-        TextButtonStyle style = new TextButtonStyle();
-        style.font = font;
-        style.fontColor = Color.WHITE;
-        skin.add("default", style);
+        skin = new Skin(Gdx.files.internal("uiskin.json")); // Make sure you have uiskin.* in assets
 
-        TextButton playButton = new TextButton("Start Game", skin);
-        playButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game));
+        Table table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        Label title = new Label("Office Adventure", skin, "default");
+        TextButton startButton = new TextButton("Start Game", skin);
+
+        startButton.addListener(e -> {
+            if (startButton.isPressed()) {
+                game.setScreen(new GameScreen());
+                return true;
             }
+            return false;
         });
 
-        createCenteredTable().add(playButton).width(200).height(50).pad(10);
+        table.add(title).padBottom(40).row();
+        table.add(startButton).width(200).height(50);
+    }
+
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0.1f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        stage.act(delta);
+        stage.draw();
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+        skin.dispose();
     }
 }
