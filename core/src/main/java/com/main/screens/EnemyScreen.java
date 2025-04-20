@@ -3,11 +3,18 @@ package com.main.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+// <<<<<<< nia
+// =======
 import com.badlogic.gdx.graphics.Color;
+// >>>>>>> main
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+// <<<<<<< nia
+// import com.badlogic.gdx.graphics.g2d.Sprite;
+// =======
+// >>>>>>> main
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -21,10 +28,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.main.utils.CollisionManager;
 
+// <<<<<<< nia
+// import java.util.*;
+// =======
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+// >>>>>>> main
 
 public class EnemyScreen implements Screen {
 
@@ -33,6 +44,14 @@ public class EnemyScreen implements Screen {
         int health, maxHealth, damage;
         float speed;
         boolean isDead = false;
+// <<<<<<< nia
+
+//         Animation<TextureRegion> runAnimation;
+//         float stateTime = 0f;
+
+//         public Enemy(float x, float y, int hp, int dmg, float speed, Animation<TextureRegion> runAnimation) {
+//             this.bounds = new Rectangle(x, y, 16, 16);
+// =======
         boolean finishedDeath = false;
 
         Animation<TextureRegion> runAnimation;
@@ -46,11 +65,21 @@ public class EnemyScreen implements Screen {
                      Animation<TextureRegion> runAnimation,
                      Animation<TextureRegion> deathAnimation) {
             this.bounds = new Rectangle(x, y, 32, 32);
+// >>>>>>> main
             this.maxHealth = hp;
             this.health = hp;
             this.damage = dmg;
             this.speed = speed;
             this.runAnimation = runAnimation;
+// <<<<<<< nia
+//         }
+
+//         public void update(float delta, Vector2 playerPos, CollisionManager collisionManager) {
+//             if (isDead) return;
+
+//             stateTime += delta;
+
+// =======
             this.deathAnimation = deathAnimation;
             this.displayedHealth = hp;
         }
@@ -65,6 +94,7 @@ public class EnemyScreen implements Screen {
             }
 
             stateTime += delta;
+// >>>>>>> main
             Vector2 dir = playerPos.cpy().sub(bounds.x, bounds.y);
             if (dir.len() > 2f) {
                 dir.nor();
@@ -76,6 +106,33 @@ public class EnemyScreen implements Screen {
                     bounds.y += dir.y * speed * delta;
                 }
             }
+// <<<<<<< nia
+//         }
+
+//         public void takeDamage(int dmg) {
+//             health -= dmg;
+//             if (health <= 0) {
+//                 isDead = true;
+//             }
+//         }
+
+//         public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
+//             if (isDead) return;
+
+//             TextureRegion currentFrame = runAnimation.getKeyFrame(stateTime, true);
+//             batch.draw(currentFrame, bounds.x, bounds.y, bounds.width, bounds.height);
+
+//             // Health bar
+//             float barWidth = bounds.width;
+//             float healthPercent = (float) health / maxHealth;
+//             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//             shapeRenderer.setColor(1, 0, 0, 1);
+//             shapeRenderer.rect(bounds.x, bounds.y + bounds.height + 2, barWidth, 3);
+//             shapeRenderer.setColor(0, 1, 0, 1);
+//             shapeRenderer.rect(bounds.x, bounds.y + bounds.height + 2, barWidth * healthPercent, 3);
+//             shapeRenderer.end();
+
+// =======
 
             if (displayedHealth > health) {
                 displayedHealth -= HEALTH_DECAY_RATE * delta;
@@ -123,22 +180,33 @@ public class EnemyScreen implements Screen {
             shapeRenderer.rect(bounds.x + offsetX, bounds.y + bounds.height + offsetY, HEALTH_BAR_WIDTH, barHeight);
             shapeRenderer.setColor(Color.GREEN);
             shapeRenderer.rect(bounds.x + offsetX, bounds.y + bounds.height + offsetY, HEALTH_BAR_WIDTH * healthPercent, barHeight);
+// >>>>>>> main
         }
     }
 
     private static class Orc extends Enemy {
+// <<<<<<< nia
+//         public Orc(float x, float y, int hp, int dmg, float speed, Animation<TextureRegion> anim) {
+//             super(x, y, hp, dmg, speed, anim);
+// =======
         public Orc(float x, float y, int hp, int dmg, float speed,
                    Animation<TextureRegion> runAnim,
                    Animation<TextureRegion> deathAnim) {
             super(x, y, hp, dmg, speed, runAnim, deathAnim);
+// >>>>>>> main
         }
     }
 
     private static class Skeleton extends Enemy {
+// <<<<<<< nia
+//         public Skeleton(float x, float y, int hp, int dmg, float speed, Animation<TextureRegion> anim) {
+//             super(x, y, hp, dmg, speed, anim);
+// =======
         public Skeleton(float x, float y, int hp, int dmg, float speed,
                         Animation<TextureRegion> runAnim,
                         Animation<TextureRegion> deathAnim) {
             super(x, y, hp, dmg, speed, runAnim, deathAnim);
+// >>>>>>> main
         }
     }
 
@@ -161,6 +229,10 @@ public class EnemyScreen implements Screen {
                 waveQueue.poll().run();
                 waitingForClear = true;
             }
+// <<<<<<< nia
+
+// =======
+// >>>>>>> main
             if (waitingForClear && enemies.stream().noneMatch(e -> !e.isDead)) {
                 waitingForClear = false;
                 lastSpawnTime = TimeUtils.millis();
@@ -172,10 +244,23 @@ public class EnemyScreen implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
     private CollisionManager collisionManager;
+// <<<<<<< nia
+
+// =======
+// >>>>>>> main
     private Rectangle player;
     private Vector2 playerPos = new Vector2();
     private ShapeRenderer shapeRenderer;
     private SpriteBatch batch;
+// <<<<<<< nia
+
+//     private List<Enemy> enemies = new ArrayList<>();
+//     private WaveManager waveManager;
+
+//     // Animation assets
+//     private Animation<TextureRegion> baseOrcRun, rogueOrcRun, warriorOrcRun;
+//     private Animation<TextureRegion> baseSkeletonRun, rogueSkeletonRun, warriorSkeletonRun;
+// =======
     private List<Enemy> enemies = new ArrayList<>();
     private WaveManager waveManager;
 
@@ -201,6 +286,7 @@ public class EnemyScreen implements Screen {
     private final long ATTACK_COOLDOWN = 500; // 500ms cooldown between attacks
     private final float ATTACK_RANGE = 20f; // Increased range for better gameplay
     private final int ATTACK_DAMAGE = 10; // Increased damage to kill enemies faster with attacks
+// >>>>>>> main
 
     @Override
     public void show() {
@@ -217,15 +303,40 @@ public class EnemyScreen implements Screen {
 
         MapObject start = map.getLayers().get("PlayerStart").getObjects().get("PlayerStart");
         Rectangle startRect = ((RectangleMapObject) start).getRectangle();
+// <<<<<<< nia
+//         player = new Rectangle(startRect.x, startRect.y, 32, 32);
+//         playerPos.set(player.x, player.y);
+
+// =======
         player = new Rectangle(startRect.x, startRect.y, 32, 32); // Increased size for character
         playerPos.set(player.x, player.y);
 
         loadPlayerAnimations();
+// >>>>>>> main
         loadAnimations();
         waveManager = new WaveManager(enemies);
         initWaves();
     }
 
+// <<<<<<< nia
+//     private void loadAnimations() {
+//     	baseOrcRun = loadRunAnimation("sprites/Orc/baseRun/Run-Sheet.png");
+//         rogueOrcRun = loadRunAnimation("sprites/Orc/rogueRun/Run-Sheet.png");
+//         warriorOrcRun = loadRunAnimation("sprites/Orc/warriorRun/Run-Sheet.png");
+
+//         baseSkeletonRun = loadRunAnimation("sprites/Skeletons/baseRun/Run-Sheet.png");
+//         rogueSkeletonRun = loadRunAnimation("sprites/Skeletons/rogueRun/Run-Sheet.png");
+//         warriorSkeletonRun = loadRunAnimation("sprites/Skeletons/warriorRun/Run-Sheet.png");
+//     }
+
+//     private Animation<TextureRegion> loadRunAnimation(String path) {
+//         Texture texture = new Texture(Gdx.files.internal(path)); // Fix: use the given path
+//         TextureRegion[][] tmp = TextureRegion.split(texture, 16, 16);
+//         TextureRegion[] frames = Arrays.copyOf(tmp[0], tmp[0].length);
+//         return new Animation<>(0.1f, frames);
+//     }
+
+// =======
     private void loadPlayerAnimations() {
         // Replace these paths with your actual NightBorne animation paths
         playerIdle = loadAnimation("sprites/MainCharacter/NightBorne_idle.png", 9, 714, 57);
@@ -275,12 +386,38 @@ public class EnemyScreen implements Screen {
             return new Animation<>(0.1f, fallbackRegion);
         }
     }
+// >>>>>>> main
 
     private void initWaves() {
         Rectangle r1 = ((RectangleMapObject) map.getLayers().get("Enemy1").getObjects().get("Enemy1")).getRectangle();
         Rectangle r2 = ((RectangleMapObject) map.getLayers().get("Enemy2").getObjects().get("Enemy2")).getRectangle();
         Rectangle r4 = ((RectangleMapObject) map.getLayers().get("Enemy4").getObjects().get("Enemy4")).getRectangle();
 
+// <<<<<<< nia
+//         // Room 1 - Orcs
+//         waveManager.queueWave(() -> enemies.add(new Orc(r1.x, r1.y, 10, 2, 30f, baseOrcRun)));
+//         waveManager.queueWave(() -> {
+//             enemies.add(new Orc(r1.x - 20, r1.y, 10, 2, 30f, baseOrcRun));
+//             enemies.add(new Orc(r1.x + 20, r1.y, 10, 2, 30f, baseOrcRun));
+//         });
+//         waveManager.queueWave(() -> enemies.add(new Orc(r1.x + 40, r1.y, 15, 3, 35f, rogueOrcRun)));
+//         waveManager.queueWave(() -> enemies.add(new Orc(r1.x - 40, r1.y, 20, 4, 40f, warriorOrcRun)));
+
+//         // Room 2 - Skeletons
+//         waveManager.queueWave(() -> enemies.add(new Skeleton(r2.x, r2.y, 8, 2, 25f, baseSkeletonRun)));
+//         waveManager.queueWave(() -> {
+//             enemies.add(new Skeleton(r2.x - 20, r2.y, 8, 2, 25f, baseSkeletonRun));
+//             enemies.add(new Skeleton(r2.x + 20, r2.y, 12, 3, 30f, rogueSkeletonRun));
+//         });
+//         waveManager.queueWave(() -> enemies.add(new Skeleton(r2.x, r2.y + 20, 18, 4, 35f, warriorSkeletonRun)));
+
+// //         Room 4 - Boss (2 Warrior Orcs + 2 Warrior Skeletons)
+//         waveManager.queueWave(() -> {
+//             enemies.add(new Orc(r4.x - 30, r4.y, 20, 4, 40f, warriorOrcRun));
+//             enemies.add(new Orc(r4.x + 30, r4.y, 20, 4, 40f, warriorOrcRun));
+//             enemies.add(new Skeleton(r4.x, r4.y - 30, 18, 4, 35f, warriorSkeletonRun));
+//             enemies.add(new Skeleton(r4.x, r4.y + 30, 18, 4, 35f, warriorSkeletonRun));
+// =======
         waveManager.queueWave(() -> enemies.add(new Orc(r1.x, r1.y, 10, 1, 30f, baseOrcRun, baseOrcDeath)));
         waveManager.queueWave(() -> {
             enemies.add(new Orc(r1.x - 20, r1.y, 10, 1, 30f, baseOrcRun, baseOrcDeath));
@@ -301,6 +438,7 @@ public class EnemyScreen implements Screen {
         waveManager.queueWave(() -> {
             enemies.add(new Skeleton(r4.x - 30, r4.y, 18, 6, 35f, warriorSkeletonRun, warriorSkeletonDeath));
             enemies.add(new Skeleton(r4.x + 30, r4.y, 18, 6, 35f, warriorSkeletonRun, warriorSkeletonDeath));
+// >>>>>>> main
         });
     }
 
@@ -317,6 +455,63 @@ public class EnemyScreen implements Screen {
         mapRenderer.render();
 
         batch.setProjectionMatrix(camera.combined);
+// <<<<<<< nia
+//         shapeRenderer.setProjectionMatrix(camera.combined);
+
+//         batch.begin();
+//         for (Enemy e : enemies) e.render(batch, shapeRenderer);
+//         batch.end();
+
+//         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//         shapeRenderer.setColor(0, 1, 0, 1);
+//         shapeRenderer.rect(player.x, player.y, player.width, player.height);
+//         shapeRenderer.end();
+//     }
+
+//     private void update(float delta) {
+//         float speed = 200 * delta;
+//         Rectangle next = new Rectangle(player);
+
+//         if (Gdx.input.isKeyPressed(Keys.W)) {
+//             next.y += speed;
+//             if (!collisionManager.collides(next)) player.y += speed;
+//         }
+//         if (Gdx.input.isKeyPressed(Keys.S)) {
+//             next.y -= speed;
+//             if (!collisionManager.collides(next)) player.y -= speed;
+//         }
+//         if (Gdx.input.isKeyPressed(Keys.A)) {
+//             next.x -= speed;
+//             if (!collisionManager.collides(next)) player.x -= speed;
+//         }
+//         if (Gdx.input.isKeyPressed(Keys.D)) {
+//             next.x += speed;
+//             if (!collisionManager.collides(next)) player.x += speed;
+//         }
+
+//         playerPos.set(player.x, player.y);
+
+//         waveManager.update();
+//         for (Enemy e : enemies) {
+//             e.update(delta, playerPos, collisionManager);
+//             if (!e.isDead && e.bounds.overlaps(player)) {
+//                 e.takeDamage(10); // Simulate player attack
+//             }
+//         }
+//     }
+
+//     @Override public void resize(int width, int height) {}
+//     @Override public void pause() {}
+//     @Override public void resume() {}
+//     @Override public void hide() {}
+
+//     @Override
+//     public void dispose() {
+//         batch.dispose();
+//         shapeRenderer.dispose();
+//         map.dispose();
+//         mapRenderer.dispose();
+// =======
         batch.begin();
         // Draw player
         renderPlayer(batch);
@@ -489,5 +684,6 @@ public class EnemyScreen implements Screen {
         baseSkeletonRun.getKeyFrames()[0].getTexture().dispose();
         rogueSkeletonRun.getKeyFrames()[0].getTexture().dispose();
         warriorSkeletonRun.getKeyFrames()[0].getTexture().dispose();
+// >>>>>>> main
     }
 }
