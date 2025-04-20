@@ -16,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.main.Main;
+import com.main.screens.WinScreen;
+
 
 public class MenuScreen extends ScreenAdapter {
 
@@ -85,10 +87,12 @@ public class MenuScreen extends ScreenAdapter {
         bossLeftImage.setSize(scaledW, scaledH);
         bossRightImage.setSize(scaledW, scaledH);
 
+
         // Button listeners
         playBtn.addListener(e -> {
             if (playBtn.isPressed()) {
                 game.setScreen(new GameOverScreen());
+
                 return true;
             }
             return false;
