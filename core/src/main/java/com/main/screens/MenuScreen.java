@@ -91,7 +91,7 @@ public class MenuScreen extends ScreenAdapter {
         // Button listeners
         playBtn.addListener(e -> {
             if (playBtn.isPressed()) {
-                game.setScreen(new GameOverScreen());
+                game.setScreen(new GameScreen(game));
 
                 return true;
             }

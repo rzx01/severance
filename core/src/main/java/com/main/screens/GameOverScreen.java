@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.audio.Music;
+import com.main.Main;
+
 
 public class GameOverScreen implements Screen {
 
@@ -48,8 +50,9 @@ public class GameOverScreen implements Screen {
 
     // Flag to check if the music has been played
     private boolean musicPlayed = false;
-
-    public GameOverScreen() {
+    private Main game;
+    public GameOverScreen(Main game) {
+        this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch = new SpriteBatch();
@@ -109,6 +112,11 @@ public class GameOverScreen implements Screen {
         TextButton retryButton = new TextButton("Retry", skin);
         retryButton.addListener(e -> {
             if (retryButton.isPressed()) {
+            	if (gameOverMusic != null) {
+                    gameOverMusic.stop();
+                    gameOverMusic.dispose();
+                }
+            	game.setScreen(new EnemyScreen(game)); 
                 System.out.println("Retry button clicked!");
                 return true;
             }
@@ -204,7 +212,7 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void dispose() {
-        batch.dispose();
+//        batch.dispose();
         gameOverImage.dispose();
         healthBarImage.dispose();
         skeletonSheet.dispose();

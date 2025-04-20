@@ -3,18 +3,12 @@ package com.main.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
-// <<<<<<< nia
-// =======
 import com.badlogic.gdx.graphics.Color;
-// >>>>>>> main
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-// <<<<<<< nia
-// import com.badlogic.gdx.graphics.g2d.Sprite;
-// =======
-// >>>>>>> main
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -25,17 +19,20 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.main.Main;
 import com.main.utils.CollisionManager;
-
-// <<<<<<< nia
-// import java.util.*;
-// =======
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-// >>>>>>> main
+
 
 public class EnemyScreen implements Screen {
 
@@ -44,14 +41,6 @@ public class EnemyScreen implements Screen {
         int health, maxHealth, damage;
         float speed;
         boolean isDead = false;
-// <<<<<<< nia
-
-//         Animation<TextureRegion> runAnimation;
-//         float stateTime = 0f;
-
-//         public Enemy(float x, float y, int hp, int dmg, float speed, Animation<TextureRegion> runAnimation) {
-//             this.bounds = new Rectangle(x, y, 16, 16);
-// =======
         boolean finishedDeath = false;
 
         Animation<TextureRegion> runAnimation;
@@ -65,21 +54,11 @@ public class EnemyScreen implements Screen {
                      Animation<TextureRegion> runAnimation,
                      Animation<TextureRegion> deathAnimation) {
             this.bounds = new Rectangle(x, y, 32, 32);
-// >>>>>>> main
             this.maxHealth = hp;
             this.health = hp;
             this.damage = dmg;
             this.speed = speed;
             this.runAnimation = runAnimation;
-// <<<<<<< nia
-//         }
-
-//         public void update(float delta, Vector2 playerPos, CollisionManager collisionManager) {
-//             if (isDead) return;
-
-//             stateTime += delta;
-
-// =======
             this.deathAnimation = deathAnimation;
             this.displayedHealth = hp;
         }
@@ -94,7 +73,6 @@ public class EnemyScreen implements Screen {
             }
 
             stateTime += delta;
-// >>>>>>> main
             Vector2 dir = playerPos.cpy().sub(bounds.x, bounds.y);
             if (dir.len() > 2f) {
                 dir.nor();
@@ -106,33 +84,6 @@ public class EnemyScreen implements Screen {
                     bounds.y += dir.y * speed * delta;
                 }
             }
-// <<<<<<< nia
-//         }
-
-//         public void takeDamage(int dmg) {
-//             health -= dmg;
-//             if (health <= 0) {
-//                 isDead = true;
-//             }
-//         }
-
-//         public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
-//             if (isDead) return;
-
-//             TextureRegion currentFrame = runAnimation.getKeyFrame(stateTime, true);
-//             batch.draw(currentFrame, bounds.x, bounds.y, bounds.width, bounds.height);
-
-//             // Health bar
-//             float barWidth = bounds.width;
-//             float healthPercent = (float) health / maxHealth;
-//             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//             shapeRenderer.setColor(1, 0, 0, 1);
-//             shapeRenderer.rect(bounds.x, bounds.y + bounds.height + 2, barWidth, 3);
-//             shapeRenderer.setColor(0, 1, 0, 1);
-//             shapeRenderer.rect(bounds.x, bounds.y + bounds.height + 2, barWidth * healthPercent, 3);
-//             shapeRenderer.end();
-
-// =======
 
             if (displayedHealth > health) {
                 displayedHealth -= HEALTH_DECAY_RATE * delta;
@@ -180,33 +131,22 @@ public class EnemyScreen implements Screen {
             shapeRenderer.rect(bounds.x + offsetX, bounds.y + bounds.height + offsetY, HEALTH_BAR_WIDTH, barHeight);
             shapeRenderer.setColor(Color.GREEN);
             shapeRenderer.rect(bounds.x + offsetX, bounds.y + bounds.height + offsetY, HEALTH_BAR_WIDTH * healthPercent, barHeight);
-// >>>>>>> main
         }
     }
 
     private static class Orc extends Enemy {
-// <<<<<<< nia
-//         public Orc(float x, float y, int hp, int dmg, float speed, Animation<TextureRegion> anim) {
-//             super(x, y, hp, dmg, speed, anim);
-// =======
         public Orc(float x, float y, int hp, int dmg, float speed,
                    Animation<TextureRegion> runAnim,
                    Animation<TextureRegion> deathAnim) {
             super(x, y, hp, dmg, speed, runAnim, deathAnim);
-// >>>>>>> main
         }
     }
 
     private static class Skeleton extends Enemy {
-// <<<<<<< nia
-//         public Skeleton(float x, float y, int hp, int dmg, float speed, Animation<TextureRegion> anim) {
-//             super(x, y, hp, dmg, speed, anim);
-// =======
         public Skeleton(float x, float y, int hp, int dmg, float speed,
                         Animation<TextureRegion> runAnim,
                         Animation<TextureRegion> deathAnim) {
             super(x, y, hp, dmg, speed, runAnim, deathAnim);
-// >>>>>>> main
         }
     }
 
@@ -229,10 +169,7 @@ public class EnemyScreen implements Screen {
                 waveQueue.poll().run();
                 waitingForClear = true;
             }
-// <<<<<<< nia
 
-// =======
-// >>>>>>> main
             if (waitingForClear && enemies.stream().noneMatch(e -> !e.isDead)) {
                 waitingForClear = false;
                 lastSpawnTime = TimeUtils.millis();
@@ -240,31 +177,75 @@ public class EnemyScreen implements Screen {
         }
     }
 
+
+    private Stage stage;
+    private Skin skin;
+
+    private boolean dialogActive = false;
+    private int currentLineIndex = 0;
+    private String[] dialogLines;
+    private String npcName = "";
+
+    private Stage dialogStage;
+    private Window dialogWindow;
+    private Label dialogLabel;
+
+    private float typeTimer = 0f;
+    private float typeInterval = 0.05f;
+    private String fullText = "";
+    private StringBuilder visibleText = new StringBuilder();
+    private boolean isTyping = false;
+
+    private List<NPC> npcs;
+    private boolean rogueTalkedTo = false;
+    private boolean wizardTalkedTo = false;
+    private boolean knightTalkedTo = false;
+
+    private final String[] rogueDialog = {
+        "I don’t know you, and I don’t care to know about you.",
+        "But you smell like... caffeine. That’s rare down here.",
+        "Tell you what—",
+        "Take care of those Byte Imps. Nasty things been gobbling at data clusters and corrupting them.",
+        "Once you're done, find the wizard"
+    };
+
+    private final String[] wizardDialog = {
+        "Well I’m sick of it. Sick and tired, tired and sick.",
+        "And perhaps a little drunk. But nevermind.",
+        "You look like the honest sort, so I've a job for you.",
+        "You're going to travel to the South— yes, the one behind the jammed port gate —",
+        "and deal with those Trojan skeletons.",
+        "They’ve been clogging the corridors with junk data and bottlenecks.",
+        "I haven’t been able to leave this blasted cell for a fresh flask of.... rootbrew.",
+        "There's fifty gold pieces in it for you, friend... right then. Off you go."
+    };
+
+    private final String[] knightDialog = {
+        "I once guarded these halls with blade and code.",
+        "The Gatekeeper... he was my comrade, until the breach twisted him.",
+        "He struck me down when I refused to fall with him.",
+        "Now this wound won’t let me finish what I started.",
+        "But you—your system’s still clean. Finish it. End him."
+    };
+    
     private OrthographicCamera camera;
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
     private CollisionManager collisionManager;
-// <<<<<<< nia
-
-// =======
-// >>>>>>> main
     private Rectangle player;
     private Vector2 playerPos = new Vector2();
     private ShapeRenderer shapeRenderer;
     private SpriteBatch batch;
-// <<<<<<< nia
 
-//     private List<Enemy> enemies = new ArrayList<>();
-//     private WaveManager waveManager;
-
-//     // Animation assets
-//     private Animation<TextureRegion> baseOrcRun, rogueOrcRun, warriorOrcRun;
-//     private Animation<TextureRegion> baseSkeletonRun, rogueSkeletonRun, warriorSkeletonRun;
-// =======
     private List<Enemy> enemies = new ArrayList<>();
     private WaveManager waveManager;
-
-    // Player variables
+    private Main game;
+    public EnemyScreen(Main game) {
+        this.game = game;
+    }
+    private long startTime;
+    private long elapsedTime;
+    
     private Animation<TextureRegion> playerIdle;
     private Animation<TextureRegion> playerRun;
     private Animation<TextureRegion> playerAttack;
@@ -281,20 +262,20 @@ public class EnemyScreen implements Screen {
     private long lastDamageTime = 0;
     private final long DAMAGE_COOLDOWN = 1000; // 1 second between damage ticks
 
-    // Attack variables
     private long lastAttackTime = 0;
-    private final long ATTACK_COOLDOWN = 500; // 500ms cooldown between attacks
+    private final long ATTACK_COOLDOWN = 750; 
     private final float ATTACK_RANGE = 20f; // Increased range for better gameplay
-    private final int ATTACK_DAMAGE = 10; // Increased damage to kill enemies faster with attacks
-// >>>>>>> main
-
+    private final int ATTACK_DAMAGE = 15; // Increased damage to kill enemies faster with attacks
+    
     @Override
     public void show() {
         map = new TmxMapLoader().load("maps/dungeon.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1f);
-
+        startTime = TimeUtils.nanoTime();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        camera.zoom = .35f;  // Adjust this value for the desired zoom level
 
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
@@ -303,40 +284,38 @@ public class EnemyScreen implements Screen {
 
         MapObject start = map.getLayers().get("PlayerStart").getObjects().get("PlayerStart");
         Rectangle startRect = ((RectangleMapObject) start).getRectangle();
-// <<<<<<< nia
-//         player = new Rectangle(startRect.x, startRect.y, 32, 32);
-//         playerPos.set(player.x, player.y);
 
-// =======
-        player = new Rectangle(startRect.x, startRect.y, 32, 32); // Increased size for character
+        player = new Rectangle(startRect.x, startRect.y, 32, 32);
         playerPos.set(player.x, player.y);
+        
+        
+        npcs = new ArrayList<>();
+        npcs.add(new NPC("Rogue", "Pixel Crawler - Free Pack 2.0.4\\Pixel Crawler - Free Pack\\Entities\\Npc's\\Rogue\\Idle\\Idle-Sheet.png", 200, 350,32,32, rogueDialog));
+        npcs.add(new NPC("Wizard", "Pixel Crawler - Free Pack 2.0.4\\Pixel Crawler - Free Pack\\Entities\\Npc's\\Wizzard\\Idle\\Idle-Sheet.png", 390, 350, 32, 32, wizardDialog));
+        npcs.add(new NPC("Knight", "Pixel Crawler - Free Pack 2.0.4\\Pixel Crawler - Free Pack\\Entities\\Npc's\\Knight\\Idle\\Idle-Sheet.png", 390, 140, 32, 32, knightDialog));
 
+        stage = new Stage(new ScreenViewport());
+        skin = new Skin(Gdx.files.internal("uiskin.json"));
+
+        dialogStage = new Stage(new ScreenViewport());
+        dialogLabel = new Label("", skin);
+        dialogLabel.setWrap(true);
+        dialogLabel.setAlignment(Align.topLeft);
+
+        dialogWindow = new Window("Dialog", skin);
+        dialogWindow.add(dialogLabel).width(400).pad(10).row();
+        dialogWindow.pack();
+        dialogWindow.setVisible(false);
+        dialogWindow.setPosition((Gdx.graphics.getWidth() - dialogWindow.getWidth()) / 2f, 50);
+        
+        dialogStage.addActor(dialogWindow);
+        
         loadPlayerAnimations();
-// >>>>>>> main
         loadAnimations();
         waveManager = new WaveManager(enemies);
         initWaves();
     }
 
-// <<<<<<< nia
-//     private void loadAnimations() {
-//     	baseOrcRun = loadRunAnimation("sprites/Orc/baseRun/Run-Sheet.png");
-//         rogueOrcRun = loadRunAnimation("sprites/Orc/rogueRun/Run-Sheet.png");
-//         warriorOrcRun = loadRunAnimation("sprites/Orc/warriorRun/Run-Sheet.png");
-
-//         baseSkeletonRun = loadRunAnimation("sprites/Skeletons/baseRun/Run-Sheet.png");
-//         rogueSkeletonRun = loadRunAnimation("sprites/Skeletons/rogueRun/Run-Sheet.png");
-//         warriorSkeletonRun = loadRunAnimation("sprites/Skeletons/warriorRun/Run-Sheet.png");
-//     }
-
-//     private Animation<TextureRegion> loadRunAnimation(String path) {
-//         Texture texture = new Texture(Gdx.files.internal(path)); // Fix: use the given path
-//         TextureRegion[][] tmp = TextureRegion.split(texture, 16, 16);
-//         TextureRegion[] frames = Arrays.copyOf(tmp[0], tmp[0].length);
-//         return new Animation<>(0.1f, frames);
-//     }
-
-// =======
     private void loadPlayerAnimations() {
         // Replace these paths with your actual NightBorne animation paths
         playerIdle = loadAnimation("sprites/MainCharacter/NightBorne_idle.png", 9, 714, 57);
@@ -386,60 +365,77 @@ public class EnemyScreen implements Screen {
             return new Animation<>(0.1f, fallbackRegion);
         }
     }
-// >>>>>>> main
 
     private void initWaves() {
+        initRogueWaves();
+        initWizardWaves();
+        initKnightWaves();
+    }
+    
+    private void initRogueWaves() {
         Rectangle r1 = ((RectangleMapObject) map.getLayers().get("Enemy1").getObjects().get("Enemy1")).getRectangle();
+        
+        waveManager.queueWave(() -> {
+        	System.out.println("Rogue wave condition: " + rogueTalkedTo);
+            if (rogueTalkedTo) {
+                enemies.add(new Orc(r1.x, r1.y, 10, 1, 30f, baseOrcRun, baseOrcDeath));
+            }
+        });
+        waveManager.queueWave(() -> {
+            if (rogueTalkedTo) {
+                enemies.add(new Orc(r1.x - 20, r1.y, 10, 10, 30f, baseOrcRun, baseOrcDeath));
+                enemies.add(new Orc(r1.x + 20, r1.y, 10, 10, 30f, baseOrcRun, baseOrcDeath));
+            }
+        });
+        waveManager.queueWave(() -> {
+            if (rogueTalkedTo) {
+                enemies.add(new Orc(r1.x + 30, r1.y, 15, 3, 35f, rogueOrcRun, rogueOrcDeath));
+            }
+        });
+        waveManager.queueWave(() -> {
+            if (rogueTalkedTo) {
+                enemies.add(new Orc(r1.x + 40, r1.y, 20, 5, 40f, warriorOrcRun, warriorOrcDeath));
+            }
+        });
+    }
+
+    private void initWizardWaves() {
         Rectangle r2 = ((RectangleMapObject) map.getLayers().get("Enemy2").getObjects().get("Enemy2")).getRectangle();
+        
+        waveManager.queueWave(() -> {
+            if (wizardTalkedTo) {
+                enemies.add(new Skeleton(r2.x, r2.y, 8, 2, 25f, baseSkeletonRun, baseSkeletonDeath));
+            }
+        });
+        waveManager.queueWave(() -> {
+            if (wizardTalkedTo) {
+                enemies.add(new Skeleton(r2.x - 20, r2.y, 8, 2, 25f, baseSkeletonRun, baseSkeletonDeath));
+                enemies.add(new Skeleton(r2.x + 20, r2.y, 12, 4, 30f, rogueSkeletonRun, rogueSkeletonDeath));
+            }
+        });
+        waveManager.queueWave(() -> {
+            if (wizardTalkedTo) {
+                enemies.add(new Skeleton(r2.x, r2.y + 20, 18, 6, 35f, warriorSkeletonRun, warriorSkeletonDeath));
+            }
+        });
+    }
+
+    private void initKnightWaves() {
         Rectangle r4 = ((RectangleMapObject) map.getLayers().get("Enemy4").getObjects().get("Enemy4")).getRectangle();
-
-// <<<<<<< nia
-//         // Room 1 - Orcs
-//         waveManager.queueWave(() -> enemies.add(new Orc(r1.x, r1.y, 10, 2, 30f, baseOrcRun)));
-//         waveManager.queueWave(() -> {
-//             enemies.add(new Orc(r1.x - 20, r1.y, 10, 2, 30f, baseOrcRun));
-//             enemies.add(new Orc(r1.x + 20, r1.y, 10, 2, 30f, baseOrcRun));
-//         });
-//         waveManager.queueWave(() -> enemies.add(new Orc(r1.x + 40, r1.y, 15, 3, 35f, rogueOrcRun)));
-//         waveManager.queueWave(() -> enemies.add(new Orc(r1.x - 40, r1.y, 20, 4, 40f, warriorOrcRun)));
-
-//         // Room 2 - Skeletons
-//         waveManager.queueWave(() -> enemies.add(new Skeleton(r2.x, r2.y, 8, 2, 25f, baseSkeletonRun)));
-//         waveManager.queueWave(() -> {
-//             enemies.add(new Skeleton(r2.x - 20, r2.y, 8, 2, 25f, baseSkeletonRun));
-//             enemies.add(new Skeleton(r2.x + 20, r2.y, 12, 3, 30f, rogueSkeletonRun));
-//         });
-//         waveManager.queueWave(() -> enemies.add(new Skeleton(r2.x, r2.y + 20, 18, 4, 35f, warriorSkeletonRun)));
-
-// //         Room 4 - Boss (2 Warrior Orcs + 2 Warrior Skeletons)
-//         waveManager.queueWave(() -> {
-//             enemies.add(new Orc(r4.x - 30, r4.y, 20, 4, 40f, warriorOrcRun));
-//             enemies.add(new Orc(r4.x + 30, r4.y, 20, 4, 40f, warriorOrcRun));
-//             enemies.add(new Skeleton(r4.x, r4.y - 30, 18, 4, 35f, warriorSkeletonRun));
-//             enemies.add(new Skeleton(r4.x, r4.y + 30, 18, 4, 35f, warriorSkeletonRun));
-// =======
-        waveManager.queueWave(() -> enemies.add(new Orc(r1.x, r1.y, 10, 1, 30f, baseOrcRun, baseOrcDeath)));
+        
         waveManager.queueWave(() -> {
-            enemies.add(new Orc(r1.x - 20, r1.y, 10, 1, 30f, baseOrcRun, baseOrcDeath));
-            enemies.add(new Orc(r1.x + 20, r1.y, 10, 1, 30f, baseOrcRun, baseOrcDeath));
-        });
-        waveManager.queueWave(() -> enemies.add(new Orc(r1.x + 30, r1.y, 15, 3, 35f, rogueOrcRun, rogueOrcDeath)));
-        waveManager.queueWave(() -> enemies.add(new Orc(r1.x + 40, r1.y, 20, 5, 40f, warriorOrcRun, warriorOrcDeath)));
-        waveManager.queueWave(() -> enemies.add(new Skeleton(r2.x, r2.y, 8, 2, 25f, baseSkeletonRun, baseSkeletonDeath)));
-        waveManager.queueWave(() -> {
-            enemies.add(new Skeleton(r2.x - 20, r2.y, 8, 2, 25f, baseSkeletonRun, baseSkeletonDeath));
-            enemies.add(new Skeleton(r2.x + 20, r2.y, 12, 4, 30f, rogueSkeletonRun, rogueSkeletonDeath));
-        });
-        waveManager.queueWave(() -> enemies.add(new Skeleton(r2.x, r2.y + 20, 18, 6, 35f, warriorSkeletonRun, warriorSkeletonDeath)));
-        waveManager.queueWave(() -> {
-            enemies.add(new Orc(r4.x - 30, r4.y, 20, 5, 40f, warriorOrcRun, warriorOrcDeath));
-            enemies.add(new Orc(r4.x + 30, r4.y, 20, 5, 40f, warriorOrcRun, warriorOrcDeath));
+            if (knightTalkedTo) {
+                enemies.add(new Orc(r4.x - 30, r4.y, 20, 5, 40f, warriorOrcRun, warriorOrcDeath));
+                enemies.add(new Orc(r4.x + 30, r4.y, 20, 5, 40f, warriorOrcRun, warriorOrcDeath));
+            }
         });
         waveManager.queueWave(() -> {
-            enemies.add(new Skeleton(r4.x - 30, r4.y, 18, 6, 35f, warriorSkeletonRun, warriorSkeletonDeath));
-            enemies.add(new Skeleton(r4.x + 30, r4.y, 18, 6, 35f, warriorSkeletonRun, warriorSkeletonDeath));
-// >>>>>>> main
+            if (knightTalkedTo) {
+                enemies.add(new Skeleton(r4.x - 30, r4.y, 18, 6, 35f, warriorSkeletonRun, warriorSkeletonDeath));
+                enemies.add(new Skeleton(r4.x + 30, r4.y, 18, 6, 35f, warriorSkeletonRun, warriorSkeletonDeath));
+            }
         });
+        
     }
 
     @Override
@@ -455,79 +451,26 @@ public class EnemyScreen implements Screen {
         mapRenderer.render();
 
         batch.setProjectionMatrix(camera.combined);
-// <<<<<<< nia
-//         shapeRenderer.setProjectionMatrix(camera.combined);
-
-//         batch.begin();
-//         for (Enemy e : enemies) e.render(batch, shapeRenderer);
-//         batch.end();
-
-//         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//         shapeRenderer.setColor(0, 1, 0, 1);
-//         shapeRenderer.rect(player.x, player.y, player.width, player.height);
-//         shapeRenderer.end();
-//     }
-
-//     private void update(float delta) {
-//         float speed = 200 * delta;
-//         Rectangle next = new Rectangle(player);
-
-//         if (Gdx.input.isKeyPressed(Keys.W)) {
-//             next.y += speed;
-//             if (!collisionManager.collides(next)) player.y += speed;
-//         }
-//         if (Gdx.input.isKeyPressed(Keys.S)) {
-//             next.y -= speed;
-//             if (!collisionManager.collides(next)) player.y -= speed;
-//         }
-//         if (Gdx.input.isKeyPressed(Keys.A)) {
-//             next.x -= speed;
-//             if (!collisionManager.collides(next)) player.x -= speed;
-//         }
-//         if (Gdx.input.isKeyPressed(Keys.D)) {
-//             next.x += speed;
-//             if (!collisionManager.collides(next)) player.x += speed;
-//         }
-
-//         playerPos.set(player.x, player.y);
-
-//         waveManager.update();
-//         for (Enemy e : enemies) {
-//             e.update(delta, playerPos, collisionManager);
-//             if (!e.isDead && e.bounds.overlaps(player)) {
-//                 e.takeDamage(10); // Simulate player attack
-//             }
-//         }
-//     }
-
-//     @Override public void resize(int width, int height) {}
-//     @Override public void pause() {}
-//     @Override public void resume() {}
-//     @Override public void hide() {}
-
-//     @Override
-//     public void dispose() {
-//         batch.dispose();
-//         shapeRenderer.dispose();
-//         map.dispose();
-//         mapRenderer.dispose();
-// =======
         batch.begin();
-        // Draw player
         renderPlayer(batch);
 
-        // Draw enemies
         for (Enemy e : enemies) {
             e.render(batch);
+        }
+        for (NPC npc : npcs) {
+            npc.draw(batch);
+        }
+
+        if (dialogActive) {
+            dialogStage.act(delta);
+            dialogStage.draw();
         }
         batch.end();
 
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        // Draw player health bar
         renderPlayerHealthBar(shapeRenderer);
 
-        // Draw enemy health bars
         for (Enemy e : enemies) {
             e.renderHealthBar(shapeRenderer);
         }
@@ -538,6 +481,8 @@ public class EnemyScreen implements Screen {
         if (isDead) {
             TextureRegion frame = playerDie.getKeyFrame(playerStateTime, false);
             batch.draw(frame, player.x, player.y, player.width, player.height);
+            game.setScreen(new GameOverScreen(game)); 
+            dispose();
             return;
         }
 
@@ -576,10 +521,100 @@ public class EnemyScreen implements Screen {
         shapeRenderer.rect(player.x, player.y + player.height + offsetY, HEALTH_BAR_WIDTH * healthPercent, barHeight);
     }
 
+    private void startDialog() {
+        currentLineIndex = 0;
+        startTyping(dialogLines[currentLineIndex]);
+        dialogWindow.setVisible(true);
+        dialogWindow.getTitleLabel().setText(npcName);
+        dialogActive = true;
+    }
+
+    private void startTyping(String text) {
+        fullText = text;
+        visibleText.setLength(0);
+        typeTimer = 0f;
+        isTyping = true;
+        dialogLabel.setText("");
+    }
+
     private void update(float delta) {
         playerStateTime += delta;
-        handleInput(delta);
+       
         playerPos.set(player.x, player.y);
+        
+
+        if (!dialogActive) {
+            Rectangle next = new Rectangle(player);
+            handleInput(delta);
+            if (Gdx.input.isKeyJustPressed(Keys.E)) {
+                for (NPC npc : npcs) {
+                    if (player.overlaps(npc.getBounds())) {
+                        dialogLines = npc.getDialogLines();
+                        npcName = npc.getName();
+                        startDialog();
+                        break;
+                    }
+                }
+            }
+        } else {
+            if (isTyping) {
+                typeTimer += delta;
+                while (typeTimer >= typeInterval && visibleText.length() < fullText.length()) {
+                    visibleText.append(fullText.charAt(visibleText.length()));
+                    dialogLabel.setText(visibleText.toString());
+                    typeTimer -= typeInterval;
+                }
+
+                if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+                    if (visibleText.length() < fullText.length()) {
+                        visibleText.setLength(0);
+                        visibleText.append(fullText);
+                        dialogLabel.setText(fullText);
+                        isTyping = false;
+                    } else {
+                        currentLineIndex++;
+                        if (currentLineIndex < dialogLines.length) {
+                            startTyping(dialogLines[currentLineIndex]);
+                        } else {
+                            // Dialog is fully completed - set the appropriate flag
+                            if (npcName.equals("Rogue")) {
+                                rogueTalkedTo = true;
+                            } else if (npcName.equals("Wizard")) {
+                                wizardTalkedTo = true;
+                            } else if (npcName.equals("Knight")) {
+                                knightTalkedTo = true;
+                            }
+                            dialogActive = false;
+                            dialogWindow.setVisible(false);
+                        }
+                    }
+                }
+            } else {
+                if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+                    currentLineIndex++;
+                    if (currentLineIndex < dialogLines.length) {
+                        startTyping(dialogLines[currentLineIndex]);
+                    } else {
+                    	System.out.println(npcName);
+                        // Dialog is fully completed - set the appropriate flag
+                        if (npcName.equals("Rogue")) {
+                            rogueTalkedTo = true;
+                            initRogueWaves();
+                        } else if (npcName.equals("Wizard")) {
+                            wizardTalkedTo = true;
+                            initWizardWaves();
+                        } else if (npcName.equals("Knight")) {
+                            knightTalkedTo = true;
+                            initKnightWaves();
+                        }
+                        System.out.println(rogueTalkedTo);
+                        dialogActive = false;
+                        dialogWindow.setVisible(false);
+                    }
+                }
+            }
+        }
+
 
         // Update all enemies and check for collisions
         for (Enemy e : enemies) {
@@ -612,12 +647,33 @@ public class EnemyScreen implements Screen {
         }
 
         waveManager.update();
+        if (allEnemiesDead()) {
+        	elapsedTime = TimeUtils.nanoTime() - startTime;  // Calculate elapsed time
+	        long elapsedTimeInSeconds = elapsedTime / 1000000000L; // Convert to seconds
+	        game.setScreen(new WinScreen(game, elapsedTimeInSeconds));
+            dispose();
+            return;
+        }
+    }
+    
+    private boolean allEnemiesDead() {
+        // Check if there are any enemies that aren't finished with their death animations
+        for (Enemy enemy : enemies) {
+            if (!enemy.finishedDeath) {
+                return false;
+            }
+        }
+        
+        // Also check if the wave manager has no more waves and all enemies are dead
+        return waveManager.waveQueue.isEmpty() && 
+               enemies.stream().allMatch(e -> e.finishedDeath) &&
+               (rogueTalkedTo && wizardTalkedTo && knightTalkedTo); // Only win if player has talked to at least one NPC
     }
 
     private void handleInput(float delta) {
-        if (isDead) return; // Can't move if dead
+        if (isDead) return; 
 
-        float moveSpeed = 200 * delta;
+        float moveSpeed = 150 * delta;
         Rectangle next = new Rectangle(player);
         if (Gdx.input.isKeyPressed(Keys.W)) next.y += moveSpeed;
         if (Gdx.input.isKeyPressed(Keys.S)) next.y -= moveSpeed;
@@ -626,8 +682,8 @@ public class EnemyScreen implements Screen {
         if (!collisionManager.collides(next)) {
             player.setPosition(next.x, next.y);
         }
-
-        // Space bar attack with cooldown
+        
+        // Space bar attack with cool down
         if (Gdx.input.isKeyJustPressed(Keys.SPACE) && TimeUtils.timeSinceMillis(lastAttackTime) > ATTACK_COOLDOWN) {
             isAttacking = true;
             playerStateTime = 0f;
@@ -670,9 +726,9 @@ public class EnemyScreen implements Screen {
     @Override
     public void dispose() {
         map.dispose();
-        mapRenderer.dispose();
-        batch.dispose();
-        shapeRenderer.dispose();
+//        mapRenderer.dispose();
+//       batch.dispose();
+//        shapeRenderer.dispose();
         playerIdle.getKeyFrames()[0].getTexture().dispose();
         playerRun.getKeyFrames()[0].getTexture().dispose();
         playerAttack.getKeyFrames()[0].getTexture().dispose();
@@ -684,6 +740,5 @@ public class EnemyScreen implements Screen {
         baseSkeletonRun.getKeyFrames()[0].getTexture().dispose();
         rogueSkeletonRun.getKeyFrames()[0].getTexture().dispose();
         warriorSkeletonRun.getKeyFrames()[0].getTexture().dispose();
-// >>>>>>> main
     }
 }

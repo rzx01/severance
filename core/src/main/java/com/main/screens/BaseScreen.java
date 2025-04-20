@@ -26,7 +26,14 @@ public abstract class BaseScreen implements Screen {
         viewport.update(width, height);
     }
 
-    @Override public void pause() {}
+    // Call this method to adjust zoom level based on map size
+    protected void setCameraZoom(float zoomLevel) {
+        camera.zoom = zoomLevel;  // Adjust zoom (1 = normal, <1 = zoomed in, >1 = zoomed out)
+        camera.update();
+    }
+
+    @Override
+    public void pause() {}
     @Override public void resume() {}
     @Override public void hide() {}
     @Override public void dispose() {

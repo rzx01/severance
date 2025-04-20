@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.InputAdapter;
 import com.main.Main;
-
 public class WinScreen implements Screen {
 
     private final Main game;
@@ -25,8 +24,12 @@ public class WinScreen implements Screen {
     private Rectangle buttonBounds;
     private boolean isButtonHovered;
 
-    public WinScreen(Main game) {
+    private long timeSpent; // Variable to store the time spent
+
+    // Constructor to accept timeSpent from EnemyScreen
+    public WinScreen(Main game, long timeSpent) {
         this.game = game;
+        this.timeSpent = timeSpent;  // Store the elapsed time
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
@@ -35,7 +38,7 @@ public class WinScreen implements Screen {
         font.getData().setScale(2f);
 
         // Load and split dancing sprite sheet
-        danceSheet = new Texture(Gdx.files.internal("assets/office_Boss_Character/Sprite_Sheets/Office_Boss_Faint.png"));
+        danceSheet = new Texture(Gdx.files.internal("office_Boss_Character/Sprite_Sheets/Office_Boss_Faint.png"));
         TextureRegion[][] tmp = TextureRegion.split(danceSheet, 32, 32);
 
         TextureRegion[] frames = new TextureRegion[tmp[0].length];
@@ -101,6 +104,12 @@ public class WinScreen implements Screen {
         game.batch.setColor(isButtonHovered ? 0.8f : 1f, 1f, 1f, 1f);
         font.draw(game.batch, "Back to Menu", buttonBounds.x + 25, buttonBounds.y + 40);
         game.batch.setColor(2f, 1f, 4f, 1f);
+
+        // Format and display the time spent
+        long minutes = timeSpent / 60;
+        long seconds = timeSpent % 60;
+        String timeText = String.format("Time Taken: %02d:%02d", minutes, seconds);
+        font.draw(game.batch, timeText, 0, 350, 800, Align.center, false); // Display at the top
 
         game.batch.end();
     }
