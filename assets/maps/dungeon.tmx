@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="33">
  <tileset firstgid="1" name="Dungeon_Tiles" tilewidth="16" tileheight="16" tilecount="625" columns="25">
-  <image source="../../../Pixel Crawler - Free Pack 2.0.4/Pixel Crawler - Free Pack/Environment/Tilesets/Dungeon_Tiles.png" width="400" height="400"/>
+  <image source="../tilesets/Dungeon_Tiles.png" width="400" height="400"/>
  </tileset>
  <tileset firstgid="626" name="Wall_Tiles" tilewidth="16" tileheight="16" tilecount="625" columns="25">
-  <image source="../../../Pixel Crawler - Free Pack 2.0.4/Pixel Crawler - Free Pack/Environment/Tilesets/Wall_Tiles.png" width="400" height="400"/>
+  <image source="../tilesets/Wall_Tiles.png" width="400" height="400"/>
  </tileset>
  <tileset firstgid="1251" name="Furniture" tilewidth="16" tileheight="16" tilecount="2700" columns="50">
-  <image source="../../../Pixel Crawler - Free Pack 2.0.4/Pixel Crawler - Free Pack/Environment/Props/Static/Furniture.png" width="800" height="864"/>
+  <image source="../tilesets/Furniture.png" width="800" height="864"/>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="40" height="30">
   <data encoding="csv">

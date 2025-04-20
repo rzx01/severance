@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.main.Main;
+import com.main.screens.WinScreen;
+
 
 public class MenuScreen extends ScreenAdapter {
 
@@ -36,7 +38,7 @@ public class MenuScreen extends ScreenAdapter {
 
         startButton.addListener(e -> {
             if (startButton.isPressed()) {
-                game.setScreen(new GameScreen());
+                game.setScreen(new EnemyScreen());
                 return true;
             }
             return false;
