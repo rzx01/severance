@@ -260,12 +260,12 @@ public class EnemyScreen implements Screen {
     private float playerDisplayedHealth = 100;
     private final float PLAYER_HEALTH_DECAY_RATE = 50f;
     private long lastDamageTime = 0;
-    private final long DAMAGE_COOLDOWN = 1000; // 1 second between damage ticks
+    private final long DAMAGE_COOLDOWN = 1000; 
 
     private long lastAttackTime = 0;
     private final long ATTACK_COOLDOWN = 750; 
-    private final float ATTACK_RANGE = 20f; // Increased range for better gameplay
-    private final int ATTACK_DAMAGE = 15; // Increased damage to kill enemies faster with attacks
+    private final float ATTACK_RANGE = 20f; 
+    private final int ATTACK_DAMAGE = 15; 
     
     @Override
     public void show() {
@@ -275,7 +275,7 @@ public class EnemyScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        camera.zoom = .35f;  // Adjust this value for the desired zoom level
+        camera.zoom = .35f;  // Adjust ye
 
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
@@ -317,7 +317,7 @@ public class EnemyScreen implements Screen {
     }
 
     private void loadPlayerAnimations() {
-        // Replace these paths with your actual NightBorne animation paths
+        
         playerIdle = loadAnimation("sprites/MainCharacter/NightBorne_idle.png", 9, 714, 57);
         playerRun = loadAnimation("sprites/MainCharacter/NightBorne_run.png", 6, 468, 59);
         playerAttack = loadAnimation("sprites/MainCharacter/NightBorne_attack.png", 12, 937, 76);
@@ -576,7 +576,7 @@ public class EnemyScreen implements Screen {
                         if (currentLineIndex < dialogLines.length) {
                             startTyping(dialogLines[currentLineIndex]);
                         } else {
-                            // Dialog is fully completed - set the appropriate flag
+                            // Dialog is fully completed 
                             if (npcName.equals("Rogue")) {
                                 rogueTalkedTo = true;
                             } else if (npcName.equals("Wizard")) {
@@ -596,7 +596,7 @@ public class EnemyScreen implements Screen {
                         startTyping(dialogLines[currentLineIndex]);
                     } else {
                     	System.out.println(npcName);
-                        // Dialog is fully completed - set the appropriate flag
+                        // Dialog is fully completed
                         if (npcName.equals("Rogue")) {
                             rogueTalkedTo = true;
                             initRogueWaves();
@@ -616,11 +616,11 @@ public class EnemyScreen implements Screen {
         }
 
 
-        // Update all enemies and check for collisions
+       
         for (Enemy e : enemies) {
             e.update(delta, playerPos, collisionManager);
 
-            // Check if enemy is touching player and damage player
+            
             if (!e.isDead && !isDead && e.bounds.overlaps(player) &&
                 TimeUtils.timeSinceMillis(lastDamageTime) > DAMAGE_COOLDOWN) {
                 playerHealth -= e.damage;
@@ -636,7 +636,6 @@ public class EnemyScreen implements Screen {
             }
         }
 
-        // Update displayed health with smooth decay
         if (playerDisplayedHealth > playerHealth) {
             playerDisplayedHealth -= PLAYER_HEALTH_DECAY_RATE * delta;
             if (playerDisplayedHealth < playerHealth) {
@@ -648,26 +647,26 @@ public class EnemyScreen implements Screen {
 
         waveManager.update();
         if (allEnemiesDead()) {
-        	elapsedTime = TimeUtils.nanoTime() - startTime;  // Calculate elapsed time
-	        long elapsedTimeInSeconds = elapsedTime / 1000000000L; // Convert to seconds
-	        game.setScreen(new WinScreen(game, elapsedTimeInSeconds));
+        	elapsedTime = TimeUtils.nanoTime() - startTime; 
+	        long elapsedTimeInSeconds = elapsedTime / 1000000000L;
+	        game.setScreen(new WinScreen(game, playerHealth, elapsedTimeInSeconds));
             dispose();
             return;
         }
     }
     
     private boolean allEnemiesDead() {
-        // Check if there are any enemies that aren't finished with their death animations
+       
         for (Enemy enemy : enemies) {
             if (!enemy.finishedDeath) {
                 return false;
             }
         }
         
-        // Also check if the wave manager has no more waves and all enemies are dead
+        
         return waveManager.waveQueue.isEmpty() && 
                enemies.stream().allMatch(e -> e.finishedDeath) &&
-               (rogueTalkedTo && wizardTalkedTo && knightTalkedTo); // Only win if player has talked to at least one NPC
+               (rogueTalkedTo && wizardTalkedTo && knightTalkedTo); // win
     }
 
     private void handleInput(float delta) {
@@ -726,9 +725,9 @@ public class EnemyScreen implements Screen {
     @Override
     public void dispose() {
         map.dispose();
-//        mapRenderer.dispose();
-//       batch.dispose();
-//        shapeRenderer.dispose();
+//      mapRenderer.dispose();
+//      batch.dispose();
+//      shapeRenderer.dispose();
         playerIdle.getKeyFrames()[0].getTexture().dispose();
         playerRun.getKeyFrames()[0].getTexture().dispose();
         playerAttack.getKeyFrames()[0].getTexture().dispose();

@@ -21,8 +21,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.main.Main;
 import com.main.utils.CollisionManager;
-import com.badlogic.gdx.Game; // Add if not already
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class GameScreen implements Screen {
     private Main game;
@@ -68,13 +66,13 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
 
-        // Player start position
+        // Player start 
         MapObject playerStart = map.getLayers().get("PlayerStart").getObjects().get("PlayerStart");
         RectangleMapObject rectObj = (RectangleMapObject) playerStart;
         Rectangle rect = rectObj.getRectangle();
         player = new Rectangle(rect.x, rect.y, 32, 32);
 
-        // NPC starts far from player
+        // NPC start
         npc = new Rectangle(player.x - 150, player.y, 32, 32);
 
         collisionManager = new CollisionManager(map, "Collision");
@@ -94,52 +92,51 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         update(delta);
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);  // Set clear color to black
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);  // Clear the screen
+        Gdx.gl.glClearColor(0, 0, 0, 1);  
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);  
 
         camera.position.set(player.x + player.width / 2, player.y + player.height / 2, 0);
         camera.update();
 
-        // Render the map first
         mapRenderer.setView(camera);
-        mapRenderer.render();  // This renders the map in the background
+        mapRenderer.render(); 
 
-        // Start drawing the game elements (player, NPC, etc.)
+     
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        // Draw the player (main character)
-        shapeRenderer.setColor(0, 1, 0, 1);  // Player color (green)
+    
+        shapeRenderer.setColor(0, 1, 0, 1);  
         shapeRenderer.rect(player.x, player.y, player.width, player.height);
 
-        // Draw the NPC (if any)
-        shapeRenderer.setColor(1, 0, 0, 1);  // NPC color (red)
+       
+        shapeRenderer.setColor(1, 0, 0, 1);  
         shapeRenderer.rect(npc.x, npc.y, npc.width, npc.height);
 
-        shapeRenderer.end();  // End drawing of game objects
+        shapeRenderer.end(); 
 
-        // Gradually change fadeAlpha over time to make the fade slower
+        
         if (fadeAlpha > 0) {
-            fadeAlpha -= delta * 0.1f;  // Slow down fade speed by multiplying delta by a smaller number
-            if (fadeAlpha < 0) fadeAlpha = 0;  // Prevent fadeAlpha from going below 0
+            fadeAlpha -= delta * 0.1f; 
+            if (fadeAlpha < 0) fadeAlpha = 0;  
         }
 
-        // Apply the fade effect over the entire screen (background + everything else)
+
         if (fadeAlpha > 0) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(0, 0, 0, fadeAlpha);  // Fade color (black)
-            shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); // Full-screen fade
+            shapeRenderer.setColor(0, 0, 0, fadeAlpha);  
+            shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             shapeRenderer.end();
         }
 
-        // Now render the stage (UI elements like dialogue, etc.)
+   
         stage.act(delta);
-        stage.draw();  // This renders the UI like the dialogue box
+        stage.draw();  
 
         if (transitioningToEnemy) {
             timer += delta;
             if (timer > 1.5f) {
-                game.setScreen(new EnemyScreen(game)); // Transition to the next screen
+                game.setScreen(new EnemyScreen(game));
             }
             return;
         }
@@ -152,8 +149,6 @@ public class GameScreen implements Screen {
             runCutscene(delta);
             return;
         }
-
-        // Regular movement after cutscene ends
         Rectangle next = new Rectangle(player);
 
         if (Gdx.input.isKeyPressed(Keys.W)) {
@@ -181,7 +176,7 @@ public class GameScreen implements Screen {
             case 0: 
       
                 Vector2 npcPos = new Vector2(npc.x, npc.y);
-                Vector2 playerPos = new Vector2(player.x, player.y);
+                Vector2 playerPos = new Vector2(player.x -2f, player.y);
                 Vector2 dir = playerPos.cpy().sub(npcPos);
 
                 if (dir.len() > 2f) {
@@ -320,9 +315,9 @@ public class GameScreen implements Screen {
                 }
                 break;
 
-            case 17: // Inner monologue + fade to black
+            case 17: 
                 timer += delta;
-                fadeAlpha = Math.min(1f, timer / 5f); // Smooth fade over 5 seconds
+                fadeAlpha = Math.min(1f, timer / 5f); 
 
                 if (timer < 1f && !dialogueShown) {
                     showDialogue("Wait...");
@@ -430,7 +425,7 @@ public class GameScreen implements Screen {
         if (dialogueShown && Gdx.input.isKeyJustPressed(Keys.SPACE)) {
             dialogueWindow.setVisible(false);
             cutsceneActive = false;
-            Gdx.input.setInputProcessor(null); // Give control back
+            Gdx.input.setInputProcessor(null);
         }
     }
 
